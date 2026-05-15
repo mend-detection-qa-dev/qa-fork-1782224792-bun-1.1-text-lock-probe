@@ -1,0 +1,128 @@
+{
+  "schema_version": "1.2",
+  "pm": "bun",
+  "pm_version_under_test": "1.1.30",
+  "pm_version_notes": "Bun 1.1.30 (2024-10-08) still used binary bun.lockb by default. Text bun.lock format was introduced in Bun v1.1.39 (2024-12-17). pm_version_under_test is pinned to 1.1.30 as the representative Bun 1.1.x release per BUN_COVERAGE_PLAN.md §11.3 entry #10. The lockfile in this probe uses lockfileVersion: 0, which is the format produced by Bun 1.1.39+.",
+  "lockfile_format": "bun.lock (text JSONC, lockfileVersion: 0)",
+  "source_file": "bun.lock",
+  "generated_at": "2026-05-15T00:00:00+00:00",
+  "paired_with": {
+    "probe_name": "bun-1.0-binary-lockb-probe",
+    "probe_index": 9,
+    "probe_url": "https://github.com/mend-detection-qa/bun-1.0-binary-lockb-probe",
+    "pair_id": "V1",
+    "pair_name": "version-pm-bunlock-1.0-vs-1.1",
+    "sibling_pm_version": "1.0.36",
+    "sibling_lockfile_format": "bun.lockb (binary)"
+  },
+  "root": {
+    "name": "bun-version-pair-probe",
+    "version": "0.1.0",
+    "dependencies": [
+      "hono",
+      "elysia"
+    ]
+  },
+  "packages": {
+    "hono": {
+      "version": "4.12.18",
+      "source": "registry",
+      "group": "main",
+      "dependencies": [],
+      "source_detail": {
+        "registry": "https://registry.npmjs.org"
+      },
+      "integrity": "sha512-RWzP96k/yv0PQfyXnWjs6zot20TqfpfsNXhOnev8d1InAxubW93L11/oNUc3tQqk2G0bSdAOBpX+2uDFHV7kdQ=="
+    },
+    "elysia": {
+      "version": "1.4.28",
+      "source": "registry",
+      "group": "main",
+      "dependencies": [
+        "cookie",
+        "exact-mirror",
+        "fast-decode-uri-component",
+        "memoirist"
+      ],
+      "source_detail": {
+        "registry": "https://registry.npmjs.org"
+      },
+      "integrity": "sha512-Vrx8sBnvq8squS/3yNBzR1jBXI+SgmnmvwawPjNuEHndUe5l1jV2Gp6JJ4ulDkEB8On6bWmmuyPpA+bq4t+WYg=="
+    },
+    "cookie": {
+      "version": "1.1.1",
+      "source": "registry",
+      "group": "main",
+      "dependencies": [],
+      "source_detail": {
+        "registry": "https://registry.npmjs.org"
+      },
+      "integrity": "sha512-ei8Aos7ja0weRpFzJnEA9UHJ/7XQmqglbRwnf2ATjcB9Wq874VKH9kfjjirM6UhU2/E5fFYadylyhFldcqSidQ==",
+      "transitive_only": true,
+      "reachable_via": ["elysia"]
+    },
+    "exact-mirror": {
+      "version": "0.2.7",
+      "source": "registry",
+      "group": "main",
+      "dependencies": [],
+      "source_detail": {
+        "registry": "https://registry.npmjs.org"
+      },
+      "integrity": "sha512-+MeEmDcLA4o/vjK2zujgk+1VTxPR4hdp23qLqkWfStbECtAq9gmsvQa3LW6z/0GXZyHJobrCnmy1cdeE7BjsYg==",
+      "transitive_only": true,
+      "reachable_via": ["elysia"]
+    },
+    "fast-decode-uri-component": {
+      "version": "1.0.1",
+      "source": "registry",
+      "group": "main",
+      "dependencies": [],
+      "source_detail": {
+        "registry": "https://registry.npmjs.org"
+      },
+      "integrity": "sha512-WKgKWg5eUxvRZGwW8FvfbaH7AXSh2cL+3j5fMGzUMCxWBJ3dV3a7Wz8y2f/uQ0e3B6WmodD3oS54jTQ9HVTIIg==",
+      "transitive_only": true,
+      "reachable_via": ["elysia"]
+    },
+    "memoirist": {
+      "version": "0.4.0",
+      "source": "registry",
+      "group": "main",
+      "dependencies": [],
+      "source_detail": {
+        "registry": "https://registry.npmjs.org"
+      },
+      "integrity": "sha512-zxTgA0mSYELa66DimuNQDvyLq36AwDlTuVRbnQtB+VuTcKWm5Qc4z3WkSpgsFWHNhexqkIooqpv4hdcqrX5Nmg==",
+      "transitive_only": true,
+      "reachable_via": ["elysia"]
+    }
+  },
+  "summary": {
+    "direct_dependencies": 2,
+    "transitive_dependencies": 4,
+    "total_dependencies": 6,
+    "groups_present": ["main"]
+  },
+  "project_metadata": {
+    "source_file": "bun.lock",
+    "lockfile_version": 0,
+    "groups": ["main"],
+    "private": true
+  },
+  "mend_detection_prediction": {
+    "expected_outcome": "TREE_POPULATED",
+    "parser_path": "bun.lock (text JSONC)",
+    "jsonc_tolerance_required": true,
+    "notes": "If Mend's JSONC parser correctly handles comments and trailing commas, the full 6-package tree should be emitted. If JSONC parsing fails (e.g. trailing commas cause a JSON parse error), the tree will be empty — same failure mode as the sibling binary probe (#9) but for a different parser path.",
+    "failure_mode_if_broken": "EMPTY_TREE (parser crash on JSONC syntax)"
+  },
+  "warnings": [
+    "Paired probe: `bun-1.0-binary-lockb-probe` (#9) at https://github.com/mend-detection-qa/bun-1.0-binary-lockb-probe. Same `package.json`; only the lockfile format differs (binary `bun.lockb` vs text JSONC `bun.lock`).",
+    "The two probes' graphs MUST be IDENTICAL IF both parsers work. If they differ, one parser has a bug. Direct: hono@4.12.18, elysia@1.4.28. Transitives: cookie@1.1.1, exact-mirror@0.2.7, fast-decode-uri-component@1.0.1, memoirist@0.4.0.",
+    "JSONC tolerance (comments + trailing commas) is the primary risk for this probe. Standard JSON parsers reject trailing commas; Mend's parser must handle JSONC as defined by the Bun lockfile spec. A strict JSON.parse() call will fail on this lockfile.",
+    "pm_version_under_test is pinned to 1.1.30 per BUN_COVERAGE_PLAN.md §11.3. Actual text bun.lock format was introduced in Bun v1.1.39 (lockfileVersion: 0). This probe's lockfile uses lockfileVersion: 0 (1.1.39-era), not lockfileVersion: 1 (Bun 1.2+). Mend must distinguish the two lockfileVersions if format semantics diverge.",
+    "Bun is NOT a UA-supported resolver (not in the install-tool list). Detection is lockfile-driven only — no install step, no bun CLI invocation. Mend falls back to its npm-resolver lockfile parser. If that parser does not handle bun.lock JSONC, this probe produces an empty tree.",
+    "elysia@1.4.28 declares peerDependencies (@types/bun, @sinclair/typebox, file-type, openapi-types, typescript) — these are NOT in the expected tree because they are not declared in the root package.json and Bun does not auto-install optional peers unless requested."
+  ]
+}

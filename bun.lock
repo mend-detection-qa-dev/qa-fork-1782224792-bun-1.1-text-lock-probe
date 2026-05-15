@@ -1,0 +1,72 @@
+// Bun lockfile — text JSONC format (Bun 1.1.39+, lockfileVersion: 0).
+// This probe exercises the Bun 1.1 era text lockfile format.
+// The text-based bun.lock was introduced in Bun v1.1.39 (2024-12-17).
+// pm_version_under_test is pinned to "1.1.30" as the representative 1.1.x
+// release per the coverage plan (BUN_COVERAGE_PLAN.md §11.3 entry #10),
+// even though 1.1.30 itself still used binary bun.lockb — the text format
+// is the new 1.1-era capability introduced 9 patch releases later.
+//
+// Key JSONC features exercised:
+//   - Line comments (// ...) throughout the file
+//   - Trailing commas on the last entry in objects
+//   - Nested JSONC in both "workspaces" and "packages" sections
+//
+// Pair V1 sibling: bun-1.0-binary-lockb-probe (#9) — same package.json,
+// binary bun.lockb instead of this text format.
+{
+  "lockfileVersion": 0,
+
+  // workspaces: root-only project (no monorepo members).
+  // Mirrors the package.json exactly; Bun 1.1 text format records the
+  // workspace manifest inside the lockfile for reproducibility.
+  "workspaces": {
+    "": {
+      "name": "bun-version-pair-probe",
+      "dependencies": {
+        "hono": "^4.0.0",
+        "elysia": "^1.0.0",
+      },
+    },
+  },
+
+  // packages: resolved registry entries.
+  // Tuple format: ["name@version", { dependencies-metadata }, "integrity-hash"]
+  // Entries with no runtime deps use an empty metadata object: {}
+  "packages": {
+
+    // Direct dep — Bun-native / multi-runtime HTTP framework.
+    // hono@4.12.18 has zero runtime dependencies — the package is self-contained.
+    "hono": ["hono@4.12.18", {}, "sha512-RWzP96k/yv0PQfyXnWjs6zot20TqfpfsNXhOnev8d1InAxubW93L11/oNUc3tQqk2G0bSdAOBpX+2uDFHV7kdQ=="],
+
+    // Direct dep — Bun-native HTTP framework / ElysiaJS.
+    // elysia@1.4.28 brings 4 runtime dependencies: cookie, exact-mirror,
+    // fast-decode-uri-component, and memoirist.
+    // Peer dependencies (@types/bun, @sinclair/typebox, etc.) are listed in
+    // the package metadata but are NOT installed unless explicitly declared
+    // in the root package.json — they are NOT in the expected tree.
+    "elysia": ["elysia@1.4.28", {
+      "dependencies": {
+        "cookie": "^1.1.1",
+        "exact-mirror": "^0.2.7",
+        "fast-decode-uri-component": "^1.0.1",
+        "memoirist": "^0.4.0",
+      },
+    }, "sha512-Vrx8sBnvq8squS/3yNBzR1jBXI+SgmnmvwawPjNuEHndUe5l1jV2Gp6JJ4ulDkEB8On6bWmmuyPpA+bq4t+WYg=="],
+
+    // Transitive dep — via elysia.
+    // cookie@1.1.1: HTTP cookie parsing/serialization. No deps.
+    "cookie": ["cookie@1.1.1", {}, "sha512-ei8Aos7ja0weRpFzJnEA9UHJ/7XQmqglbRwnf2ATjcB9Wq874VKH9kfjjirM6UhU2/E5fFYadylyhFldcqSidQ=="],
+
+    // Transitive dep — via elysia.
+    // exact-mirror@0.2.7: object mirroring utility for schema validation. No deps.
+    "exact-mirror": ["exact-mirror@0.2.7", {}, "sha512-+MeEmDcLA4o/vjK2zujgk+1VTxPR4hdp23qLqkWfStbECtAq9gmsvQa3LW6z/0GXZyHJobrCnmy1cdeE7BjsYg=="],
+
+    // Transitive dep — via elysia.
+    // fast-decode-uri-component@1.0.1: optimized URI decoding. No deps.
+    "fast-decode-uri-component": ["fast-decode-uri-component@1.0.1", {}, "sha512-WKgKWg5eUxvRZGwW8FvfbaH7AXSh2cL+3j5fMGzUMCxWBJ3dV3a7Wz8y2f/uQ0e3B6WmodD3oS54jTQ9HVTIIg=="],
+
+    // Transitive dep — via elysia.
+    // memoirist@0.4.0: radix-trie memoization for route matching. No deps.
+    "memoirist": ["memoirist@0.4.0", {}, "sha512-zxTgA0mSYELa66DimuNQDvyLq36AwDlTuVRbnQtB+VuTcKWm5Qc4z3WkSpgsFWHNhexqkIooqpv4hdcqrX5Nmg=="],
+  },
+}
